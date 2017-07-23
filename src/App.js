@@ -1,21 +1,43 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
+
+import TodoForm from './components/Todo/TodoForm';
+import TodoList from './components/Todo/TodoList';
+import { addTodo } from './actions/todosActions';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <TodoForm
+          todo={this.props.todo}
+          dispatch={this.props.dispatch}
+          action={addTodo}
+        />
+
+        <TodoList />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    todo: state.todos.todo,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: dispatch
+  }
+}
+
+const VisibleApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
+
+export default VisibleApp
